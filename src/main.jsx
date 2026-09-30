@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
   ArrowRight,
@@ -60,7 +60,15 @@ function Chatbot() {
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState(initialMessages);
   const [isSending, setIsSending] = useState(false);
+  const latestMessageRef = useRef(null);
   const sessionId = useMemo(() => getSessionId(), []);
+
+  useEffect(() => {
+    latestMessageRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'end'
+    });
+  }, [messages, isSending, open]);
 
   const sendMessage = async (text = message) => {
     const cleanText = text.trim();
@@ -159,6 +167,17 @@ function Chatbot() {
                 {item.from === 'bot' && <span className="message-meta">Oyik.AI - 06:32 PM</span>}
               </div>
             ))}
+            {isSending && (
+              <div className="message-block bot">
+                <div className="chat-bubble bot typing-bubble" aria-label="Oyik.AI is typing">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <span className="message-meta">Oyik.AI is typing</span>
+              </div>
+            )}
+            <div ref={latestMessageRef} />
           </div>
 
           <div className="quick-actions" aria-label="Quick actions">
