@@ -336,7 +336,7 @@ h2 {
   overflow: hidden;
   position: absolute;
   right: 0;
-  width: min(520px, calc(100vw - 44px));
+  width: min(420px, calc(100vw - 44px));
 }
 
 .chat-header {
